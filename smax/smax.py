@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
 
@@ -22,9 +24,9 @@ class Smax:
         """
         Return the BeautifulSoup itself.
         """
-        return self._soup
+        return self._soups
 
-    def find_all_links(self, limit=None | int) -> ResultSet:
+    def find_all_links(self, limit: int = None) -> ResultSet:
         """
         Return all links found on the document.
         """

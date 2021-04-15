@@ -13,3 +13,9 @@ def test_get_title(smaxx: Smax):
     a = smaxx.title
 
     assert a == "Google"
+
+
+def test_find_all_links(smaxx: Smax):
+    a = smaxx.find_all_links(limit=2)
+
+    assert len(a) == 2
