@@ -3,13 +3,19 @@ from __future__ import annotations
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
 
-from .request import request_wrapper
+from .request import cfscrape_wrapper, request_wrapper
 
 
 class Smax:
-    def __init__(self, website: str) -> None:
+    def __init__(
+        self, website: str, headers: dict = None, cloudflare: bool = False
+    ) -> None:
         self.website = website
-        self.__html = request_wrapper(website).text
+        self.__html = (
+            request_wrapper(website, headers).text
+            if not cloudflare
+            else cfscrape_wrapper(website, headers).text
+        )
         self._soup = BeautifulSoup(self.__html, "lxml")
 
     @property
