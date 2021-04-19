@@ -36,3 +36,5 @@ def cfscrape_wrapper(website: str) -> Response:  # , allow_brotli: bool = True
         raise RequestError(
             "There was a problem with your request, please try again later."
         )
+
+    return r
