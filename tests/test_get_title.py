@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 
-from smax import Smax
+from smaxpy import Smax
 
 
 @pytest.fixture()

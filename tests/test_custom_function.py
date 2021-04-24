@@ -2,7 +2,7 @@ import pytest
 
 import requests
 
-from smax import Smax
+from smaxpy import Smax
 
 
 def customfunction(website: str):
