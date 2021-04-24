@@ -13,7 +13,7 @@ pip3 install smaxpy
 ```python
 from smaxpy import Smax
 
-a = Smax()
+a = Smax("https://www.google.com")
 
 print(a.title)
 ```
