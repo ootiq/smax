@@ -5,7 +5,7 @@ README = (pathlib.Path(__file__).parent / "README.md").read_text()
 
 setup(
     name="smaxpy",
-    version="0.0.1",
+    version="0.0.2",
     description="Just a small wrapper to website scraping utilities.",
     long_description=README,
     long_description_content_type="text/markdown",
