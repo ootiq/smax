@@ -23,5 +23,5 @@ setup(
     ],
     packages=["smaxpy"],
     include_package_data=True,
-    install_requires=["requests", "cloudscraper", "bs4"],
+    install_requires=["requests", "cloudscraper", "bs4", "lxml"],
 )
