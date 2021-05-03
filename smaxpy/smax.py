@@ -44,7 +44,7 @@ class Smax:
         """
         Return the BeautifulSoup itself.
         """
-        return self._soups
+        return self._soup
 
     def find_all_links(self, limit: int = None) -> ResultSet:
         """
