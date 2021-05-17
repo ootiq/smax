@@ -1,8 +1,0 @@
-disable=
-    format,
-    duplicate-code,
-    invalid-name
-
-reports=no
-ignore-comments=yes
-ignore-imports=no
