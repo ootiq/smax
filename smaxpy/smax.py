@@ -14,7 +14,7 @@ class Smax:
         self,
         website: str,
         request_function: Optional[
-            Callable[[str, Optional[dict]], Response]
+            Callable[[str], Response]
         ],  # a custom function wrapper
         headers: Optional[dict],
         cloudflare: bool = False,
@@ -24,7 +24,7 @@ class Smax:
 
         Args:
             `website` (str): [the website to scrape]
-            `request_function` (Optional[Callable[[str, Optional[str]], Response]], optional): [your custom function wrapper].
+            `request_function` (Optional[Callable[[str], Response]], optional): [your custom function wrapper].
             Defaults to None.
             `cloudflare` (bool, optional): [use cloudflare]. Defaults to False.
 
@@ -37,7 +37,7 @@ class Smax:
 
         self.website = website
         self.__html = (
-            request_function(website, headers).text
+            request_function(website).text
             if request_function is not None
             else (
                 request_wrapper(website, headers).text
