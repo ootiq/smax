@@ -15,8 +15,8 @@ class Smax:
         website: str,
         request_function: Optional[
             Callable[[str], Response]
-        ],  # a custom function wrapper
-        headers: Optional[dict],
+        ] = None,  # a custom function wrapper
+        headers: Optional[dict] = None,
         cloudflare: bool = False,
     ) -> None:
         """
