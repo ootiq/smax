@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import requests
-import cloudscraper
 from requests.models import Response
+import cloudscraper
+
 
 from .errors import RequestError
 

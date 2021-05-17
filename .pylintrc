@@ -1,6 +1,7 @@
 disable=
     format,
-    duplicate-code
+    duplicate-code,
+    invalid-name
 
 reports=no
 ignore-comments=yes

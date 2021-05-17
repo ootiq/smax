@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from bs4 import BeautifulSoup
-from bs4.element import ResultSet
+from bs4.element import ResultSet, Tag
 
 from .request import cfscrape_wrapper, request_wrapper
+from .errors import SoupParseError
 
 
 class Smax:
@@ -14,6 +15,19 @@ class Smax:
         headers: dict = None,
         cloudflare: bool = False,
     ) -> None:
+        """New Smax simple client wrapper.
+
+        Args:
+            `website` (str): [the website to scrape]
+            `request_function` ([type], optional): [your custom function wrapper].
+            Defaults to None.
+            `cloudflare` (bool, optional): [use cloudflare]. Defaults to False.
+
+        Raises:
+            `SoupParseError`: [it errors if the result from the request_function is
+            blank or None]
+        """
+
         # TODO: future better implementation of request_function
 
         self.website = website
@@ -26,7 +40,11 @@ class Smax:
                 else cfscrape_wrapper(website, headers).text
             )
         )
-        self._soup = BeautifulSoup(self.__html, "lxml")
+
+        if not self.__html:
+            raise SoupParseError("Output from request function is blank.")
+
+        self.__soup = BeautifulSoup(self.__html, "lxml")
 
     def __repr__(self) -> str:
         # TODO: change,
@@ -34,20 +52,52 @@ class Smax:
 
     @property
     def title(self) -> str:
+        """Return the scraped website's title.
+
+        Returns:
+            str: [website title]
         """
-        Return the scraped website's title.
+        return self.__soup.title.get_text()
+
+    @property
+    def head(self) -> Tag:
+        """Return the <head></head> tag.
+
+        Returns:
+            Tag: [website's `head` tag]
         """
-        return self._soup.title.get_text()
+        return self.__soup.head
+
+    @property
+    def body(self) -> Tag:
+        """Return the <body></body> tag.
+
+        Returns:
+            Tag: [website's `body` tag]
+        """
+        return self.__soup.body
 
     @property
     def soup(self) -> BeautifulSoup:
+        """Return the BeautifulSoup itself.
+
+        Returns:
+            BeautifulSoup: [output from the Beautifulsoup parse]
         """
-        Return the BeautifulSoup itself.
-        """
-        return self._soup
+        return self.__soup
 
     def find_all_links(self, limit: int = None) -> ResultSet:
+        """Return all links found on the document.
+
+        Args:
+            limit (int, optional): [limit of links to return]. Defaults to None.
+
+        Returns:
+            ResultSet: [the list of found links]
         """
-        Return all links found on the document.
+        return self.__soup.find_all("a", limit=limit)
+
+    def get_script(self):
         """
-        return self._soup.find_all("a", limit=limit)
+        [!NOTE:: FUNCTION IS BLANK] Parse the <script></script> tag.
+        """
