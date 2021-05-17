@@ -1,4 +1,11 @@
 {
     "python.formatting.blackPath": "venv/bin/black",
-    "python.pythonPath": "venv/bin/python"
+    "python.pythonPath": "venv/bin/python",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintPath": "venv/bin/pylint",
+    "python.languageServer": "Pylance",
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }

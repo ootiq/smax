@@ -1,0 +1,7 @@
+disable=
+    format,
+    duplicate-code
+
+reports=no
+ignore-comments=yes
+ignore-imports=no
