@@ -1,7 +1,9 @@
 from __future__ import annotations
+from typing import Callable, Optional
 
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet, Tag
+from requests.models import Response
 
 from .request import cfscrape_wrapper, request_wrapper
 from .errors import SoupParseError
@@ -11,15 +13,18 @@ class Smax:
     def __init__(
         self,
         website: str,
-        request_function=None,  # a custom function wrapper
-        headers: dict = None,
+        request_function: Optional[
+            Callable[[str, Optional[dict]], Response]
+        ],  # a custom function wrapper
+        headers: Optional[dict],
         cloudflare: bool = False,
     ) -> None:
-        """New Smax simple client wrapper.
+        """
+        New Smax simple client wrapper.
 
         Args:
             `website` (str): [the website to scrape]
-            `request_function` ([type], optional): [your custom function wrapper].
+            `request_function` (Optional[Callable[[str, Optional[str]], Response]], optional): [your custom function wrapper].
             Defaults to None.
             `cloudflare` (bool, optional): [use cloudflare]. Defaults to False.
 
@@ -32,7 +37,7 @@ class Smax:
 
         self.website = website
         self.__html = (
-            request_function(website).text
+            request_function(website, headers).text
             if request_function is not None
             else (
                 request_wrapper(website, headers).text
@@ -57,7 +62,7 @@ class Smax:
         Returns:
             str: [website title]
         """
-        return self.__soup.title.get_text()
+        return self.__soup.title.get_text()  # type: ignore
 
     @property
     def head(self) -> Tag:
@@ -86,7 +91,7 @@ class Smax:
         """
         return self.__soup
 
-    def find_all_links(self, limit: int = None) -> ResultSet:
+    def find_all_links(self, limit: Optional[int]) -> ResultSet:
         """Return all links found on the document.
 
         Args:
@@ -97,7 +102,7 @@ class Smax:
         """
         return self.__soup.find_all("a", limit=limit)
 
-    def get_script(self):
+    def get_script(self) -> None:
         """
         [!NOTE:: FUNCTION IS BLANK] Parse the <script></script> tag.
         """

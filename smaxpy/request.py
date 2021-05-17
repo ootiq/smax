@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Optional
 
 import requests
 from requests.models import Response
@@ -8,7 +9,7 @@ import cloudscraper
 from .errors import RequestError
 
 
-def request_wrapper(website: str, headers: dict) -> Response:
+def request_wrapper(website: str, headers: Optional[dict]) -> Response:
     """
     Just a simple wrapper for the `requests` module.
     """
@@ -22,20 +23,22 @@ def request_wrapper(website: str, headers: dict) -> Response:
     return r
 
 
-def cfscrape_wrapper(website: str) -> Response:  # , allow_brotli: bool = True
+def cfscrape_wrapper(website: str, headers: Optional[dict]) -> Response:
     """
     Just a simple wrapper for the `cloudscraper` module.
     """
 
     # TODO: better implementation
+    # , allow_brotli: bool = True
 
     scraper = cloudscraper.create_scraper()
 
     try:
-        r = scraper.get(website)
+        r = scraper.get(website, headers=headers)
+
     except Exception:
         raise RequestError(
             "There was a problem with your request, please try again later."
         )
 
-    return r
+    return r  # type: ignore
