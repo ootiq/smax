@@ -2,14 +2,14 @@ from __future__ import annotations
 from typing import Callable, Optional
 
 from bs4 import BeautifulSoup
-from bs4.element import ResultSet, Tag
+from bs4.element import ResultSet
 from requests.models import Response
 
 from .request import cfscrape_wrapper, request_wrapper
 from .errors import SoupParseError
 
 
-class Smax:
+class Smax(BeautifulSoup):
     def __init__(
         self,
         website: str,
@@ -51,6 +51,9 @@ class Smax:
 
         self.__soup = BeautifulSoup(self.__html, "lxml")
 
+        # inherit from `BeautifulSoup` class
+        super().__init__(self.__html, "lxml")
+
     def __repr__(self) -> str:
         # TODO: change,
         return "New Smax Class"
@@ -58,38 +61,12 @@ class Smax:
     @property
     def title(self) -> str:
         """Return the scraped website's title.
+        It overrides the BeautifulSoup's `.title.text`
 
         Returns:
             str: [website title]
         """
-        return self.__soup.title.get_text()  # type: ignore
-
-    @property
-    def head(self) -> Tag:
-        """Return the <head></head> tag.
-
-        Returns:
-            Tag: [website's `head` tag]
-        """
-        return self.__soup.head
-
-    @property
-    def body(self) -> Tag:
-        """Return the <body></body> tag.
-
-        Returns:
-            Tag: [website's `body` tag]
-        """
-        return self.__soup.body
-
-    @property
-    def soup(self) -> BeautifulSoup:
-        """Return the BeautifulSoup itself.
-
-        Returns:
-            BeautifulSoup: [output from the Beautifulsoup parse]
-        """
-        return self.__soup
+        return self.__soup.title.text  # type: ignore
 
     def find_all_links(self, limit: Optional[int]) -> ResultSet:
         """Return all links found on the document.
