@@ -1,9 +1,8 @@
 from __future__ import annotations
-from typing import Callable, Optional
+from typing import Any, Callable, Dict, Optional
 
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
-from requests.models import Response
 
 from .request import cfscrape_wrapper, request_wrapper
 from .errors import SoupParseError
@@ -13,9 +12,9 @@ class Smax(BeautifulSoup):
     def __init__(
         self,
         website: str,
-        request_function: Optional[
-            Callable[[str], Response]
-        ] = None,  # a custom function wrapper
+        request_function: Callable[
+            [str, Optional[Dict[str, Any]]], str
+        ] = request_wrapper,  # a custom function wrapper (default to request_wrapper)
         headers: Optional[dict] = None,
         cloudflare: bool = False,
     ) -> None:
@@ -34,17 +33,10 @@ class Smax(BeautifulSoup):
         """
 
         # TODO: future better implementation of request_function
+        self.request_function = cfscrape_wrapper if cloudflare else request_function
 
         self.website = website
-        self.__html = (
-            request_function(website).text
-            if request_function is not None
-            else (
-                request_wrapper(website, headers).text
-                if not cloudflare
-                else cfscrape_wrapper(website, headers).text
-            )
-        )
+        self.__html = self.request_function(website, headers)  # request the website
 
         if not self.__html:
             raise SoupParseError("Output from request function is blank.")

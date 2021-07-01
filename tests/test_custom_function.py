@@ -1,14 +1,12 @@
-import pytest
-
 import requests
 
 from smaxpy import Smax
 
 
-def customfunction(website: str):
+def customfunction(website: str, headers):
     print(website)  # print the website, this is not included on the default wrappers
 
-    return requests.get(website)
+    return requests.get(website).text
 
 
 def test_custom_function(capsys):
